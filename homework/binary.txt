@@ -1,0 +1,12 @@
+num = 10
+digit_0 = 0
+count = 0
+while True:
+    if num > 0:
+        num, digit = divmod(num, 2)
+        binary = digit_0 + digit * 10 ** count
+        digit_0 = digit
+        count += 1
+    if num == 0:
+        break
+print(binary)
