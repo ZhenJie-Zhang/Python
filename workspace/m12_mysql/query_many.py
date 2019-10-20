@@ -1,0 +1,33 @@
+import mysql.connector
+from mysql.connector import errorcode
+
+cursor = None
+conn = None
+try:
+    conn = mysql.connector.connect(database='db01', user='root', password='dfgh0147')
+    cursor = conn.cursor()
+    query = ("SELECT ename, hiredate, salary FROM employee WHERE deptno = %s AND title = %s")
+    deptno = 100
+    title = 'engineer'
+    cursor.execute(query, (deptno, title))
+
+    for ename, hiredate, salary in cursor:
+        print('name={}, hiredata={}, salary={}'.format(ename, hiredate, salary))
+    print('total', cursor.rowcount, "employees")
+
+except mysql.connector.Error as err:
+    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+        print('user or password error')
+    elif err.errno == errorcode.ER_BAD_DB_ERROR:
+        print("database doesn't existed")
+    else:
+        print(err)
+
+finally:
+    if cursor:
+        print('cursor is closed')
+        cursor.close()
+
+    if conn:
+        print('database is closed')
+        conn.close()
